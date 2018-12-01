@@ -114,10 +114,8 @@ public class PaypalDesk {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        
     }
-
 
     private static int getUserIdFromConsole(String message) {
         System.out.print(message);
