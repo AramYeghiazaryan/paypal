@@ -62,7 +62,7 @@ public class DbHelper {
 
         try {
             Statement statement=connection.createStatement();
-            statement.execute(sql);
+            statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -78,16 +78,8 @@ public class DbHelper {
      * @param amount   transaction amount
      */
     static void transaction(int userFrom, int userTo, double amount) {
-        String sql1="update users set balance=balance+"+amount +"where id="+userTo;
-        String sql2="update users set balance=balance-"+amount+"where id="+userFrom;
-
-        try {
-            Statement statement=connection.createStatement();
-            statement.execute(sql2);
-            statement.execute(sql1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        cashFlow(userFrom,-amount);
+        cashFlow(userTo,amount);
         System.out.println("Transaction completed");
     }
 
@@ -117,3 +109,4 @@ public class DbHelper {
         }
     }
 }
+
