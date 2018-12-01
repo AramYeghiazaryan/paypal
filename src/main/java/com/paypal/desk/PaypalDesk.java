@@ -106,11 +106,16 @@ public class PaypalDesk {
 
         double amount = getAmountFromConsole();
 
-        DbHelper.transaction(
-                userFrom, userTo, amount
-        );
+        try {
+            DbHelper.transaction(
+                    userFrom, userTo, amount
+            );
+            System.out.println("Transaction successful");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        System.out.println("Transaction successful");
+
     }
 
 

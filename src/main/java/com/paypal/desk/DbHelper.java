@@ -43,6 +43,10 @@ public class DbHelper {
 
             resultSet.next();
 
+            if(!statement.isClosed()){
+                statement.close();
+            }
+
             return resultSet.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -63,10 +67,14 @@ public class DbHelper {
         try {
             Statement statement=connection.createStatement();
             statement.executeUpdate(sql);
+            if(!statement.isClosed()){
+                statement.close();
+            }
+            System.out.println("Balance is changed");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Balance is changed");
+
     }
 
     /**
@@ -77,10 +85,30 @@ public class DbHelper {
      * @param userTo   target user id
      * @param amount   transaction amount
      */
-    static void transaction(int userFrom, int userTo, double amount) {
-        cashFlow(userFrom,-amount);
-        cashFlow(userTo,amount);
-        System.out.println("Transaction completed");
+    static void transaction(int userFrom, int userTo, double amount) throws Exception {
+        String sql="select balance from users where id="+userFrom;
+        try {
+            Statement statement=connection.createStatement();
+
+            ResultSet resultSet=statement.executeQuery(sql);
+            resultSet.next();
+            int balance=resultSet.getInt(1);
+
+            if(balance>amount) {
+                cashFlow(userFrom, -amount);
+                cashFlow(userTo, amount);
+
+            }else{
+                System.out.println("Sorry, your balance isn't enough to complete transaction");
+                throw new Exception("You don't have enough money on your balance");
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     static List<User> listUsers() {
@@ -101,6 +129,9 @@ public class DbHelper {
                 userList.add(new User(
                         id, firstName, lastName, balance
                 ));
+            }
+            if(!statement.isClosed()){
+                statement.close();
             }
             return userList;
         } catch (SQLException e) {
