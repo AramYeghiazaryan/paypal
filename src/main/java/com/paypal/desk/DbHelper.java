@@ -99,7 +99,9 @@ public class DbHelper {
             ResultSet resultSet=statement.executeQuery(sql);
             resultSet.next();
             int balance=resultSet.getInt(1);
-
+            if(!resultSet.isClosed()) {
+                resultSet.close();
+            }
             if(balance>amount) {
                 cashFlow(userFrom, -amount);
                 cashFlow(userTo, amount);
