@@ -22,7 +22,7 @@ public class PaypalDesk {
 
             String command = scanner.nextLine();
 
-            switch (command) {
+            switch (command.toUpperCase()) {
                 case "C":
                     createUser();
                     break;
@@ -40,6 +40,9 @@ public class PaypalDesk {
                     break;
                 case "Q":
                     return;
+                    default:
+                        System.out.println("Wrong Argument");
+                        break;
             }
         }
     }
@@ -114,7 +117,7 @@ public class PaypalDesk {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     private static int getUserIdFromConsole(String message) {
@@ -130,4 +133,9 @@ public class PaypalDesk {
                 scanner.nextLine()
         );
     }
+
+
+
+
+
 }

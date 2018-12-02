@@ -86,7 +86,13 @@ public class DbHelper {
      * @param amount   transaction amount
      */
     static void transaction(int userFrom, int userTo, double amount) throws Exception {
+
         String sql="select balance from users where id="+userFrom;
+        String sql2="insert into transactions(user_from,user_to,transaction_amount) values(" +
+                userFrom+","+
+                userTo+","+
+                amount+
+                ")";
         try {
             Statement statement=connection.createStatement();
 
@@ -97,7 +103,7 @@ public class DbHelper {
             if(balance>amount) {
                 cashFlow(userFrom, -amount);
                 cashFlow(userTo, amount);
-
+                statement.executeUpdate(sql2);
             }else{
                 System.out.println("Sorry, your balance isn't enough to complete transaction");
                 throw new Exception("You don't have enough money on your balance");
@@ -112,7 +118,8 @@ public class DbHelper {
     }
 
     static List<User> listUsers() {
-        String sql = "select * from users";
+
+        String sql = "select * from users where id=";
 
         try {
             Statement statement = connection.createStatement();
@@ -139,5 +146,45 @@ public class DbHelper {
             return null;
         }
     }
+
+   /* public static void  test(){
+        String sql="select * from users";
+        try {
+            Statement statement=connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+            ResultSet resultSet=statement.executeQuery(sql);
+            while (resultSet.next()){
+                print(resultSet);
+            }
+          *//*  if(resultSet.previous()){
+                resultSet.previous();  //last-1; with 2 resultSet.previous();
+                print(resultSet);
+            }*//*
+         //   resultSet.first();
+        //    print(resultSet);
+
+           resultSet.first();
+           resultSet.updateString("first_name","name");
+           resultSet.updateRow();
+
+            print(resultSet);
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }*/
+    /*private static void print(ResultSet resultSet){
+        try {
+            System.out.print(resultSet.getInt("id")+" ");
+            System.out.print(resultSet.getString("first_name")+" ");
+            System.out.print(resultSet.getString("last_name")+" ");
+            System.out.print(resultSet.getDouble("balance")+" ");
+            System.out.println();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }*/
 }
 
