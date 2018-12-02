@@ -121,7 +121,7 @@ public class DbHelper {
 
     static List<User> listUsers() {
 
-        String sql = "select * from users where id=";
+        String sql = "select * from users where id";
 
         try {
             Statement statement = connection.createStatement();
